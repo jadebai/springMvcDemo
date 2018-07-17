@@ -171,7 +171,6 @@ public class InitHandler {
                 continue;
             }
             for (Field field : fields) {
-                field.setAccessible(true);
                 if (field.isAnnotationPresent(Qualifier.class)) {
                     Qualifier qualifier = field.getAnnotation(Qualifier.class);
                     try {
