@@ -20,6 +20,6 @@ public class TestController {
     @Mapping("test")
     public Object test(){
         testService.test();
-        return null;
+        return "test springmvc demo";
     }
 }
