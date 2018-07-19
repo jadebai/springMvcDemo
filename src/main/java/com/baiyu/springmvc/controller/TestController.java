@@ -13,7 +13,6 @@ import com.baiyu.springmvc.service.TestService;
  */
 @Controller("testController")
 @Mapping("test")
-@ResposeBody
 public class TestController {
 
     @Qualifier("testServiceImpl")
@@ -21,6 +20,13 @@ public class TestController {
 
     @Mapping("test")
     public Object test(){
+        testService.test();
+        return "test springmvc demo";
+    }
+
+    @Mapping("testJson")
+    @ResposeBody
+    public Object testJson(){
         testService.test();
         return "test springmvc demo";
     }

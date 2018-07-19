@@ -4,6 +4,8 @@ import com.baiyu.springmvc.annotation.Controller;
 import com.baiyu.springmvc.annotation.ResposeBody;
 import com.baiyu.springmvc.handler.InitHandler;
 import com.baiyu.springmvc.utils.ObjectUtil;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import netscape.javascript.JSObject;
 import sun.org.mozilla.javascript.internal.json.JsonParser;
 
@@ -35,26 +37,21 @@ public class DispaterServlet extends HttpServlet {
         }
         try {
             Object result = method.invoke(controller);
-            if (controller.getClass().isAnnotationPresent(ResposeBody.class)){
-                //定义网络文件的类型和编码，决定浏览器以什么形式、什么编码读取这个文件
-                resp.setContentType("text/html;charst=utf-8");
-                //构造一个标准输出流
-                PrintWriter out = resp.getWriter();
+            //定义网络文件的类型和编码，决定浏览器以什么形式、什么编码读取这个文件
+            resp.setContentType("text/html;charst=utf-8");
+            //构造一个标准输出流
+            PrintWriter out = resp.getWriter();
+            if (controller.getClass().isAnnotationPresent(ResposeBody.class)
+                    || method.isAnnotationPresent(ResposeBody.class)){
+                //将内容输出到客户端
+                Gson gson = new Gson();
+                out.println(gson.toJson(result));
+            }else{
                 //将内容输出到客户端
                 out.println(result);
-                //关闭输出流
-                out.close();
             }
-            if (method.isAnnotationPresent(ResposeBody.class)){
-                //定义网络文件的类型和编码，决定浏览器以什么形式、什么编码读取这个文件
-                resp.setContentType("text/html;charst=utf-8");
-                //构造一个标准输出流
-                PrintWriter out = resp.getWriter();
-                //将内容输出到客户端
-                out.println(result);
-                //关闭输出流
-                out.close();
-            }
+            //关闭输出流
+            out.close();
         }catch (Exception e){
             System.out.println(method+"反射调用失败"+e);
         }
