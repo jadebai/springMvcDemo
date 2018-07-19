@@ -1,14 +1,19 @@
 package com.baiyu.springmvc.selvet;
 
 import com.baiyu.springmvc.annotation.Controller;
+import com.baiyu.springmvc.annotation.ResposeBody;
 import com.baiyu.springmvc.handler.InitHandler;
 import com.baiyu.springmvc.utils.ObjectUtil;
+import netscape.javascript.JSObject;
+import sun.org.mozilla.javascript.internal.json.JsonParser;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.Writer;
 import java.lang.reflect.Method;
 
 /**
@@ -29,7 +34,27 @@ public class DispaterServlet extends HttpServlet {
             return;
         }
         try {
-            method.invoke(controller,null);
+            Object result = method.invoke(controller);
+            if (controller.getClass().isAnnotationPresent(ResposeBody.class)){
+                //定义网络文件的类型和编码，决定浏览器以什么形式、什么编码读取这个文件
+                resp.setContentType("text/html;charst=utf-8");
+                //构造一个标准输出流
+                PrintWriter out = resp.getWriter();
+                //将内容输出到客户端
+                out.println(result);
+                //关闭输出流
+                out.close();
+            }
+            if (method.isAnnotationPresent(ResposeBody.class)){
+                //定义网络文件的类型和编码，决定浏览器以什么形式、什么编码读取这个文件
+                resp.setContentType("text/html;charst=utf-8");
+                //构造一个标准输出流
+                PrintWriter out = resp.getWriter();
+                //将内容输出到客户端
+                out.println(result);
+                //关闭输出流
+                out.close();
+            }
         }catch (Exception e){
             System.out.println(method+"反射调用失败"+e);
         }

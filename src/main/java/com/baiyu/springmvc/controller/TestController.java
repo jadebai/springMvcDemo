@@ -3,6 +3,7 @@ package com.baiyu.springmvc.controller;
 import com.baiyu.springmvc.annotation.Controller;
 import com.baiyu.springmvc.annotation.Mapping;
 import com.baiyu.springmvc.annotation.Qualifier;
+import com.baiyu.springmvc.annotation.ResposeBody;
 import com.baiyu.springmvc.service.TestService;
 
 /**
@@ -12,6 +13,7 @@ import com.baiyu.springmvc.service.TestService;
  */
 @Controller("testController")
 @Mapping("test")
+@ResposeBody
 public class TestController {
 
     @Qualifier("testServiceImpl")
